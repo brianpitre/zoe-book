@@ -158,7 +158,7 @@
   var MANNY_PORTRAIT = {
     cls: 'pg--plate', chrome: 'none', body:
       '<div class="portrait">' +
-      '<div class="portrait__art"><img src="art/portrait-manny.jpg" alt="Dr. Manny Arango" onerror="this.src=\'images/manny-arango.jpg\'"></div>' +
+      '<div class="portrait__art"><img src="art/portrait-manny.jpg?v=2" alt="Dr. Manny Arango" onerror="this.src=\'images/manny-arango.jpg\'"></div>' +
       '<p class="portrait__caption"><strong>DR. MANNY ARANGO</strong> · Houston, Texas</p>' +
       '</div>'
   };
@@ -355,7 +355,10 @@
       }
       var last = SPREADS[SPREADS.length - 1];
       var staticHTML = pageHTML(last.right, 'recto', nextFolio(last.right));
-      html += '<div class="page-static page-static--right">' + staticHTML + '</div>';
+      /* starts hidden — z-index inside a preserve-3d context is unreliable
+         (it flashed over turning pages on some mobile engines); the timeline
+         reveals it the moment the final leaf lifts */
+      html += '<div class="page-static page-static--right" style="visibility:hidden">' + staticHTML + '</div>';
     } else {
       var blank = { cls: 'pg--blank', chrome: 'none', body: '' };
       leaves.push({ front: pageHTML(COVER, 'recto'), back: pageHTML(blank, 'verso'), cover: true, label: 'Cover', jump: 'cover' });
@@ -367,13 +370,16 @@
         });
       }
       var lastPg = MOBILE_PAGES[MOBILE_PAGES.length - 1];
-      html += '<div class="page-static page-static--right">' + pageHTML(lastPg.def, 'recto', nextFolio(lastPg.def)) + '</div>';
+      html += '<div class="page-static page-static--right" style="visibility:hidden">' + pageHTML(lastPg.def, 'recto', nextFolio(lastPg.def)) + '</div>';
     }
 
     leaves.forEach(function (leaf, i) {
+      /* Back faces start visibility:hidden — CSS backface-visibility alone
+         is not honored mid-animation by every engine (ghosting); the
+         timeline swaps face visibility at each leaf's edge-on moment. */
       html += '<div class="leaf' + (leaf.cover ? ' leaf--cover' : '') + '" data-leaf="' + i + '" style="z-index:' + (60 - i) + '">' +
         '<div class="leaf__face leaf__face--front">' + leaf.front + '</div>' +
-        '<div class="leaf__face leaf__face--back">' + leaf.back + '</div>' +
+        '<div class="leaf__face leaf__face--back" style="visibility:hidden">' + leaf.back + '</div>' +
         '</div>';
     });
 
@@ -400,6 +406,7 @@
     var edgeLeft = document.getElementById('edgeLeft');
     var castRight = document.getElementById('castRight');
     var castLeft = document.getElementById('castLeft');
+    var staticPg = bookWrap.querySelector('.page-static');
     var TOPZ = 220;
 
     // starting pose: closed book, centered on its cover
@@ -454,6 +461,16 @@
         tl.to(book, { xPercent: 0, duration: 1, ease: 'power1.inOut' }, t);
         tl.to([boardLeft, edgeLeft], { opacity: 1, duration: 0.45 }, t + 0.5);
       }
+      /* Deterministic face swap at the edge-on moment (90°). Some engines
+         ignore backface-visibility while the transform animates and ghost
+         the outgoing face (e.g. a translucent cover mid-turn); a scrubbed
+         set() applies forward and reverts when scrolled back. */
+      tl.set(front, { visibility: 'hidden' }, t + 0.5);
+      tl.set(back, { visibility: 'visible' }, t + 0.5);
+      /* The static register page stays hidden until the last leaf lifts —
+         inside preserve-3d its z-index isn't trustworthy on every engine
+         (it flashed on each page turn in DuckDuckGo mobile). */
+      if (i === leaves.length - 1 && staticPg) tl.set(staticPg, { visibility: 'visible' }, t);
       tl.set(el, { zIndex: i + 1 }, t + 1);
 
       t += 1;
