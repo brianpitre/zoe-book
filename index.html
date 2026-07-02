@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoe Conference 2026 — In the Beginning… · The Book</title>
+<meta name="description" content="Zoe Conference 2026 — In the Beginning… September 25–26 at The Life Church, Memphis. A two-day gathering for women, told as a book: turn the pages to read the story.">
+<meta property="og:title" content="Zoe Conference 2026 — In the Beginning…">
+<meta property="og:description" content="September 25–26 · The Life Church · Memphis. Scroll to open the book.">
+<meta property="og:image" content="images/hero-video-poster.jpg">
+<link rel="icon" type="image/png" href="images/z-icon.png">
+<link rel="preload" href="fonts/TheQualityBrave-Regular.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="fonts/F00044.otf" as="font" type="font/otf" crossorigin>
+<link rel="stylesheet" href="css/book.css">
+</head>
+<body>
+
+<!-- Loader -->
+<div class="loader" id="loader" aria-hidden="true">
+  <img class="loader__icon" src="images/z-icon.png" alt="">
+  <div class="loader__line"></div>
+  <p class="loader__hint">Opening the book…</p>
+</div>
+
+<!-- Film grain -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- Nav -->
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#" data-jump="cover" aria-label="Zoe Conference — back to the cover">
+    <img src="images/z-icon.png" alt="" class="nav__icon">
+    <span class="nav__word">Zoe <em>MMXXVI</em></span>
+  </a>
+  <nav class="nav__links" aria-label="Chapters">
+    <a href="#" data-jump="speakers">Speakers</a>
+    <a href="#" data-jump="details">Details</a>
+    <a href="#" data-jump="rates">Rates</a>
+    <a href="#" data-jump="faqs">FAQs</a>
+    <a href="#" class="nav__cta js-register" data-jump="register">Register</a>
+  </nav>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+    <span></span><span></span>
+  </button>
+</header>
+
+<div class="mmenu" id="mobileMenu" aria-hidden="true">
+  <a href="#" data-jump="speakers">Speakers</a>
+  <a href="#" data-jump="details">Details</a>
+  <a href="#" data-jump="rates">Rates</a>
+  <a href="#" data-jump="faqs">FAQs</a>
+  <a href="#" class="mmenu__cta js-register" data-jump="register">Register</a>
+</div>
+
+<main>
+  <h1 class="visually-hidden">Zoe Conference 2026 — In the Beginning… · September 25–26 · The Life Church, Memphis</h1>
+  <!-- The whole experience lives here; js/book.js builds the book,
+       pins it, and turns its pages as you scroll. -->
+  <section class="book-scroll" id="bookScroll" aria-label="Zoe Conference 2026 — the book">
+    <div class="stage" id="stage">
+      <div class="scene" id="scene">
+        <canvas id="dust" aria-hidden="true"></canvas>
+        <div class="book-wrap" id="bookWrap"><!-- built by JS --></div>
+        <div class="scroll-hint" id="scrollHint" aria-hidden="true">
+          <span>Scroll to open the book</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="folio-indicator" id="folioIndicator" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <noscript>
+    <section class="noscript">
+      <img src="images/title-gold-trim.png" alt="In the Beginning…" style="max-width:420px;width:80%;margin:0 auto 24px;display:block">
+      <h1>Zoe Conference 2026</h1>
+      <p><strong>September 25–26, 2026 · The Life Church — Houston Levee · 650 Houston Hill Road, Eads, TN 38028</strong></p>
+      <p>Friday 7:00–10:00p — Evening Session &amp; After Show · Saturday 9:00a–1:00p — Daytime Sessions, breakfast included.</p>
+      <p>Guest speakers: Lisa Harper &amp; Dr. Manny Arango.</p>
+      <p>Rates: Early $69 (ends Aug 2) · Regular $79 (Aug 3–Sep 13) · Last Chance $89 (from Sep 14) · Students $25 (6th grade–college, to age 23).</p>
+      <p>This site turns its pages with JavaScript — please enable it for the full experience, or email <a href="mailto:zoe@thelifechurch.com">zoe@thelifechurch.com</a> with any questions.</p>
+    </section>
+  </noscript>
+</main>
+
+<script src="js/gsap.min.js"></script>
+<script src="js/ScrollTrigger.min.js"></script>
+<script src="js/lenis.min.js"></script>
+<script src="js/book.js"></script>
+</body>
+</html>
