@@ -459,7 +459,11 @@
       }, t);
       if (i === 0 && !single) {
         tl.to(book, { xPercent: 0, duration: 1, ease: 'power1.inOut' }, t);
-        tl.to([boardLeft, edgeLeft], { opacity: 1, duration: 0.45 }, t + 0.5);
+        /* The left board is painted with the cover leather — fading it in
+           from the turn's midpoint exposed a bare leather panel before the
+           endpaper landed on it (read as a ghost of the front cover).
+           Materialize it only as the leaf settles. */
+        tl.to([boardLeft, edgeLeft], { opacity: 1, duration: 0.15 }, t + 0.85);
       }
       /* Deterministic face swap at the edge-on moment (90°). Some engines
          ignore backface-visibility while the transform animates and ghost

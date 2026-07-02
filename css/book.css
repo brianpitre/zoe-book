@@ -201,9 +201,14 @@ a{color:var(--gold-bright)}
 }
 .book{position:absolute;inset:0;transform-style:preserve-3d}
 
-/* Boards — the leather covers, slightly larger than the pages */
+/* Boards — the leather covers, slightly larger than the pages.
+   translateZ pushes them behind the leaves in real 3D: inside preserve-3d,
+   paint order for coplanar elements is engine-dependent (the full-width
+   right board flashed over turning pages on mobile). A few px is invisible
+   at this perspective but makes the sort deterministic. */
 .board{
   position:absolute;top:-.55em;bottom:-.55em;
+  transform:translateZ(-6px);
   background:
     linear-gradient(135deg, rgba(255,255,255,.05), rgba(0,0,0,.28)),
     url('../art/cover.jpg') center/cover no-repeat,
@@ -216,6 +221,7 @@ a{color:var(--gold-bright)}
 /* Page-block edges — the stacked paper you see beyond the pages */
 .block-edge{
   position:absolute;top:-.2em;bottom:-.2em;width:.42em;z-index:1;
+  transform:translateZ(-3px); /* behind leaves, above boards (see .board) */
   background:repeating-linear-gradient(to right,#d9c9a7 0 1px,#bfae8a 1px 2px,#cdbc98 2px 3px);
   box-shadow:inset 0 0 .2em rgba(0,0,0,.25);
 }
@@ -243,7 +249,7 @@ a{color:var(--gold-bright)}
 }
 
 /* Static base pages (bottom of each stack) */
-.page-static{position:absolute;top:0;height:100%;width:50%;z-index:0;overflow:hidden}
+.page-static{position:absolute;top:0;height:100%;width:50%;z-index:0;overflow:hidden;transform:translateZ(-1px)}
 .page-static--right{left:50%}
 .page-static--left{left:0;opacity:0}
 
