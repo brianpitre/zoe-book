@@ -503,13 +503,25 @@ a{color:var(--gold-bright)}
 .book-wrap--single .board--left,.book-wrap--single .block-edge--left,.book-wrap--single .cast--left{display:none}
 .book-wrap--single .page-static--right{left:0;width:100%}
 .book-wrap--single .cast--right{left:0;width:100%}
-.book-wrap--single .pg{padding:1.9em 1.7em 1.4em;border-radius:.25em}
+.book-wrap--single .pg{padding:1.5em 1.7em 1.2em;border-radius:.25em;line-height:1.5}
 .book-wrap--single .pg::before{display:none}
 .book-wrap--single .pg--cover{border-radius:.28em .5em .5em .28em}
-.book-wrap--single .ledger li{padding:.48em 0}
 .book-wrap--single .h-name{font-size:1.9em}
-.book-wrap--single .qa dd{margin-bottom:.8em}
 .book-wrap--single .qa dt{font-size:.9em}
+/* Fit content within the fixed mobile page height so body text never
+   collides with the running head (centered pages) or the folio (bottom). */
+.book-wrap--single .pg__head{margin-bottom:.7em}
+/* Top-align centered pages on mobile: the small page can't reliably
+   center a full text block without pushing it up into the running head. */
+.book-wrap--single .pg--center .pg__body{justify-content:flex-start;padding-bottom:.6em}
+.book-wrap--single .body-copy{margin-bottom:.7em}
+.book-wrap--single .flourish{margin:.55em 0}
+.book-wrap--single .ledger{margin:.3em 0 .65em}
+.book-wrap--single .ledger li{padding:.3em 0}
+.book-wrap--single .fine{line-height:1.42}
+.book-wrap--single .qa{margin-bottom:.5em}
+.book-wrap--single .qa dd{margin-bottom:.55em;line-height:1.44}
+.book-wrap--single .letter p{line-height:1.52;margin-bottom:.72em}
 /* blank verso shown while a mobile page is mid-turn */
 .pg--blank{
   background:
