@@ -104,8 +104,8 @@
   var PLATE_EDEN = {
     cls: 'pg--plate', chrome: 'none', body:
       '<div class="plate__art plate__art--live" style="background-image:url(\'art/plate-eden.jpg\')">' +
-        '<video class="plate__video" muted playsinline preload="auto" poster="art/plate-eden.jpg">' +
-          '<source src="art/plate-eden.mp4?v=1" type="video/mp4">' +
+        '<video class="plate__video" muted playsinline preload="auto" poster="art/plate-eden-poster.jpg?v=2">' +
+          '<source src="art/plate-eden.mp4?v=2" type="video/mp4">' +
         '</video>' +
         fireflies(10) +
       '</div>' +
