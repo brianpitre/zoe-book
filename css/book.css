@@ -383,6 +383,30 @@ a{color:var(--gold-bright)}
   background:center/cover no-repeat;box-shadow:0 .1em .8em rgba(60,44,18,.35);
 }
 .plate__art img{width:100%;height:100%;object-fit:cover}
+/* Living plate: slow dolly-out video over the still, with drifting fireflies.
+   The background-image (poster) is the fallback if the video is hidden/fails. */
+.plate__art--live{position:relative;overflow:hidden}
+.plate__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.plate__fireflies{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.plate__fireflies i{
+  position:absolute;width:6px;height:6px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,244,1) 0%, rgba(255,228,150,.9) 36%, rgba(255,200,90,0) 72%);
+  box-shadow:0 0 8px 2px rgba(255,216,140,.7);
+  opacity:0;will-change:transform,opacity;
+  animation-name:firefly;animation-iteration-count:infinite;animation-timing-function:ease-in-out;
+}
+@keyframes firefly{
+  0%,100%{opacity:0;transform:translate(0,0) scale(.6)}
+  12%{opacity:.9}
+  35%{opacity:.4;transform:translate(9px,-20px) scale(1)}
+  60%{opacity:.85;transform:translate(-6px,-37px) scale(.95)}
+  85%{opacity:.15;transform:translate(14px,-54px) scale(.72)}
+}
+/* Motion-sensitive readers: hold the still plate, no video, no fireflies. */
+@media (prefers-reduced-motion:reduce){
+  .plate__video{display:none}
+  .plate__fireflies{display:none}
+}
 .plate__caption{
   text-align:center;font-style:italic;font-size:.74em;color:var(--ink-soft);
   padding-top:1em;

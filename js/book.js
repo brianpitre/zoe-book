@@ -81,9 +81,34 @@
       '</div>'
   };
 
+  /* A few drifting, blinking fireflies over the living Eden plate.
+     Pure CSS-animated (see .plate__fireflies) — cheap, turns with the leaf,
+     and hidden under prefers-reduced-motion. Positions bias to the lower/
+     middle garden (among the flowers and path), not the sky. */
+  function fireflies(n) {
+    /* biased into the darker foliage (not the bright sky/sun/path) where a
+       warm glow actually twinkles; a little size variance reads as depth */
+    var pos = [[14, 60], [24, 77], [33, 64], [68, 63], [80, 82], [58, 86], [18, 88], [73, 50], [45, 90], [62, 45]];
+    var sz = [6, 5, 7, 5, 6, 7, 5, 6, 5, 6];
+    var s = '<div class="plate__fireflies" aria-hidden="true">';
+    for (var i = 0; i < n; i++) {
+      var p = pos[i % pos.length];
+      var dur = (9 + (i * 1.7) % 7).toFixed(1);
+      var del = (-((i * 2.3) % 11)).toFixed(1);
+      var w = sz[i % sz.length];
+      s += '<i style="left:' + p[0] + '%;top:' + p[1] + '%;width:' + w + 'px;height:' + w + 'px;animation-duration:' + dur + 's;animation-delay:' + del + 's"></i>';
+    }
+    return s + '</div>';
+  }
+
   var PLATE_EDEN = {
     cls: 'pg--plate', chrome: 'none', body:
-      '<div class="plate__art" style="background-image:url(\'art/plate-eden.jpg\')"></div>' +
+      '<div class="plate__art plate__art--live" style="background-image:url(\'art/plate-eden.jpg\')">' +
+        '<video class="plate__video" muted playsinline preload="auto" poster="art/plate-eden.jpg">' +
+          '<source src="art/plate-eden.mp4?v=1" type="video/mp4">' +
+        '</video>' +
+        fireflies(10) +
+      '</div>' +
       '<p class="plate__caption"><strong>THE GARDEN</strong> · “And the Lord God planted a garden eastward in Eden.” — Genesis 2:8</p>'
   };
 
@@ -533,6 +558,25 @@
     setAccess(accessFaces.staticPg, page === n);
   }
 
+  /* Living-plate videos: play once (from the wide establishing frame, pushing
+     in) when the plate's page is revealed, then hold on the last frame — no
+     loop. Reset when the page is hidden so the push-in replays on return.
+     The firefly overlay is CSS-driven and keeps drifting regardless. */
+  function updatePlateVideos() {
+    document.querySelectorAll('.plate__video').forEach(function (v) {
+      var host = v.closest('.leaf__face, .page-static');
+      var visible = host && !host.inert;
+      if (visible) {
+        if (v.paused && v.currentTime < 0.05) {
+          var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
+        }
+      } else if (!v.paused || v.currentTime > 0) {
+        v.pause();
+        try { v.currentTime = 0; } catch (e) {}
+      }
+    });
+  }
+
   function onScrollUpdate(st) {
     var p = st.progress;
     if (scrollHint) scrollHint.classList.toggle('is-hidden', p > 0.015);
@@ -548,6 +592,7 @@
     if (current.page !== lastAccessPage) {
       lastAccessPage = current.page;
       updateFaceAccess(current.page);
+      updatePlateVideos();
     }
   }
 
